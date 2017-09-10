@@ -1,0 +1,33 @@
+Popov\Role\Model\Role:
+  type: entity
+  table: roles
+  fields:
+    id:
+      id: true
+      type: integer
+      generator:
+        strategy: AUTO
+      options:
+        unsigned: true
+    role:
+     type: string
+     length: 50
+    mnemo:
+      type: string
+      length: 30
+      default: ''
+    resource:
+      type: string
+      default: 'custom'
+    remove:
+      type: string
+      length: 1
+      default: '1'
+  oneToMany:
+    mailOptionRole:
+      targetEntity: Popov\Mail\Model\MailOptionRole
+      mappedBy: roles
+  manyToMany:
+    users:
+      targetEntity: Popov\User\Model\User
+      mappedBy: roles

@@ -1,6 +1,6 @@
 {
   "name": "popov/zfc-role",
-  "description": "ZF2 role managment module with prebuild UI",
+  "description": "ZF2 role management module with prebuild UI",
   "type": "zf-module",
   "license": "MIT",
   "keywords": [

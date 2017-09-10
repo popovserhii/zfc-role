@@ -1,0 +1,159 @@
+<?php
+use Popov\Users\Acl\Acl;
+
+$this->plugin('translate')->setTranslatorTextDomain('Popov\Permission');
+
+/** @var \Popov\ZfcRole\View\Helper\Role $rolesHelper */
+$rolesHelper = $this->roles();
+
+/** @var \Popov\Permission\View\Helper\Permission $permissionHelper */
+$permissionHelper = $this->permission();
+
+$controller = $this->layout()->route->getParam('controller');
+$action = $this->layout()->route->getParam('action');
+
+$resource = $form->get('resource')->getValue();
+$classActiveTab = 'active';
+$permissionTree = $permissionHelper->permissionTree($tabs);
+?>
+
+
+<div class="column-after-menu">
+    <?= $this->form()->openTag($form) ?>
+	<div>
+		<div class="title left">
+			Роль: <?=$this->formRow($form->get('role'))?>
+		</div>
+		<div class="right">
+			<?php
+			$buttonsArgs['save'] = [
+				'type'       => 'submit',
+				'attr'       => [
+					'class' => 'button',
+				],
+				'controller' => 'permission-access',
+				'action'     => 'edit',
+			];
+
+			echo $this->buttons('saveItem', $buttonsArgs);
+			?>
+		</div>
+		<div class="right">
+			Доступ к ресурсу
+			<select name="resource" onchange="$('#resource_access').toggle()" class="big-select">
+                <?= $rolesHelper->resourceList($resource) ?>
+            </select>
+		</div>
+	</div>
+
+	<br class="clear">
+
+	<div id="resource_access" style="display: <?=($resource == 'all') ? 'none' : 'block';?>;">
+		<!-- header -->
+		<div class="header-title">
+			<?php $i = $keySettings = 1; ?>
+			<?php foreach($tabs as $tab) : ?>
+				<?php $class = ($i == 1) ? $classActiveTab : ''; ?>
+                <div class="tab-1 <?= $class ?>"><a href="#tab<?= $i ?>"><?= $tab->getMenu() ?></a></div>
+                <?php if ($tab->getController() == 'settings') : ?>
+                    <?php $keySettings = $i; ?>
+                <?php endif; ?>
+                <?php ++$i; ?>
+			<?php endforeach; ?>
+		</div>
+		<!-- END header -->
+		<!-- content -->
+		<div class="body-content">
+            <?php //\Zend\Debug\Debug::dump($permissionTree); die(__METHOD__); ?>
+			<?php foreach ($permissionTree as $key => $tree) { ?>
+				<?php $keyTab = $key + 1; ?>
+                <div id="tab<?= $keyTab ?>">
+					<?php foreach ($tree as $moduleName => $actions) { ?>
+						<!-- module name -->
+						<?php if ($keyTab == $keySettings) : ?>
+                            <div class="string-title"><?= $this->translate($moduleName) ?></div>
+						<?php endif; ?>
+						<!-- END module name -->
+                        <?php //\Zend\Debug\Debug::dump($moduleName); //die(__METHOD__); ?>
+
+                        <?php foreach ($actions as $action) { ?>
+							<!-- action -->
+							<?php $checked = $permissionHelper->getChecked($items, 'action', $action['id']); ?>
+							<?php $classAction = array_key_exists('fields', $action) ? ' string-show-hide' : ''; ?>
+							<div class="string string-dark-gray<?=$classAction?>">
+								<div><div class="title-color"><?=$this->translate($moduleName.'::'.$action['text'])?></div><div class="figure arrow-down"></div></div>
+								<div><input type="checkbox" name="accessAction[<?=$action['id']?>][]" value="<?=Acl::getAccess('write')?>"<?=$checked['write']?>> Запись</div>
+								<div><input type="checkbox" name="accessAction[<?=$action['id']?>][]" value="<?=Acl::getAccess('read')?>"<?=$checked['read']?>> Чтение</div>
+								<br class="clear">
+							</div>
+							<!-- END action -->
+							<!-- fields -->
+							<?php if (array_key_exists('fields', $action)) : ?>
+								<div>
+								<?php foreach($action['fields'] as $field) : ?>
+									<?php $checked = $permissionHelper->getChecked($items, 'field', $field['id']); ?>
+									<div class="string string-light-gray">
+										<div><?=$field['text']?></div>
+										<div><input type="checkbox" name="accessField[<?=$field['id']?>][]" value="<?=Acl::getAccess('write')?>"<?=$checked['write']?>></div>
+										<div><input type="checkbox" name="accessField[<?=$field['id']?>][]" value="<?=Acl::getAccess('read')?>"<?=$checked['read']?>></div>
+										<br class="clear">
+									</div>
+								<?php endforeach; ?>
+								</div>
+							<?php endif; ?>
+							<!-- END fields -->
+							<!-- settings -->
+							<?php if (array_key_exists('settings', $action)) { ?>
+                                <?php
+                                $settingsSimple = [];
+                                $settingsArgs = [];
+								for ($j = 0, $count = count($action['settings']); $j < $count; ++$j) {
+									if (isset($action['settings'][$j]['args'])) {
+										$settingsArgs[] = $action['settings'][$j];
+									} else {
+										$settingsSimple[] = $action['settings'][$j];
+									}
+								}
+                                ?>
+                                <?php if ($settingsSimple) : ?>
+                                    <div class="string string-light-blue string-show-hide">
+                                        <div>Дополнительные настройки <div class="arrows arrow-down"></div></div>
+                                        <br class="clear">
+                                    </div>
+                                    <?= $this->partial('roles/partial/settings-content', [
+                                        'settings' => $settingsSimple,
+                                        'items' => $items,
+                                    ]) ?>
+                                <?php endif; ?>
+
+                                <?php if ($settingsArgs) : ?>
+									<?php //\Zend\Debug\Debug::dump($settingsArgs); die(__METHOD__); ?>
+                                    <div class="string string-light-blue string-show-hide">
+                                        <div>Дополнительные настройки <div class="arrows arrow-down"></div></div>
+                                        <?php $settings = []; ?>
+                                        <?php for ($j = 0, $count = count($settingsArgs); $j < $count; ++ $j) { ?>
+                                            <?php foreach ($settingsArgs[$j]['fields'] as $field) { ?>
+                                                <?php if ($field['name']) { ?>
+													<div><?= $field['name'] ?></div>
+                                                <?php } ?>
+                                            <?php } ?>
+                                            <?php $settings = $settingsArgs[$j]['args']; ?>
+                                        <?php } ?>
+                                        <br class="clear">
+                                    </div>
+                                    <?= $this->partial('roles/partial/settings-content', [
+                                        'settings'  => $settings,
+                                        'items'     => $items,
+                                    ]) ?>
+                                <?php endif; ?>
+							<?php } ?>
+							<!-- END settings -->
+						<?php } ?>
+					<?php } ?>
+				</div>
+			<?php } ?>
+		</div>
+		<!-- END content -->
+	</div>
+    <?= $this->form()->closeTag() ?>
+</div>

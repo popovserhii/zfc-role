@@ -1,0 +1,20 @@
+<?php
+use Popov\Users\Acl\Acl;
+
+/** @var \Popov\Permission\View\Helper\Permission $permissionHelper */
+$permissionHelper = $this->permission();
+?>
+
+<div class="hide">
+    <?php foreach($settings as $setting) { ?>
+        <?php $ids = (array) $setting['id']; ?>
+        <div class="string string-white">
+            <div><?=$setting['text']?></div>
+            <?php foreach ($ids as $id) { ?>
+                <?php $checked = $permissionHelper->getChecked($items, 'settings', $id); ?>
+                <div><input type="checkbox" name="accessSettings[<?=$id?>][]" value="<?=Acl::getAccess('read')?>"<?=$checked['read']?>></div>
+            <?php } ?>
+            <br class="clear">
+        </div>
+    <?php } ?>
+</div>
