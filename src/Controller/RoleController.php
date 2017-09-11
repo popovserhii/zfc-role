@@ -8,7 +8,7 @@ use Zend\Mvc\Controller\AbstractActionController,
 	Popov\ZfcRole\Form\Roles as RolesForm,
 	Popov\Permission\Controller\PermissionAccessController;
 
-class RolesController extends AbstractActionController {
+class RoleController extends AbstractActionController {
 
 	public $serviceName = 'RolesService';
 	public $controllerRedirect = 'roles';

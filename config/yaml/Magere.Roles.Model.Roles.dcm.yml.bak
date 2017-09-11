@@ -29,5 +29,5 @@ Popov\Role\Model\Role:
       mappedBy: roles
   manyToMany:
     users:
-      targetEntity: Popov\User\Model\User
+      targetEntity: Popov\UserPlugin\Model\UserPlugin
       mappedBy: roles
