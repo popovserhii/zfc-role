@@ -96,9 +96,9 @@ class RoleService extends DomainServiceAbstract
 			$serviceUsers = $this->getService('users');
 			$userItem = $serviceUsers->getItemsCollection(['roleId' => $id], 1, true, 1);
 
-			/** @var \Popov\Mail\Service\MailOptionRoleService $mailOptionRolesService */
+			/** @var \Popov\ZfcMail\Service\MailOptionRoleService $mailOptionRolesService */
 			$mailOptionRolesService = $this->getService('mailOptionRole');
-			/** @var \Popov\Mail\Model\MailOptionRole $itemOptionRoles */
+			/** @var \Popov\ZfcMail\Model\MailOptionRole $itemOptionRoles */
 			$itemOptionRoles = $mailOptionRolesService->getOneItem($id, 'roleId');
 
 			if (! $userItem && ! $itemOptionRoles->getId())

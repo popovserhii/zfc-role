@@ -6,7 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController,
 	Zend\View\Model\JsonModel,
 	Popov\Agere\Filter\Translit,
 	Popov\ZfcRole\Form\Roles as RolesForm,
-	Popov\Permission\Controller\PermissionAccessController;
+	Popov\ZfcPermission\Controller\PermissionAccessController;
 
 class RoleController extends AbstractActionController {
 

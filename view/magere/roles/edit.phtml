@@ -6,7 +6,7 @@ $this->plugin('translate')->setTranslatorTextDomain('Popov\Permission');
 /** @var \Popov\ZfcRole\View\Helper\Role $rolesHelper */
 $rolesHelper = $this->roles();
 
-/** @var \Popov\Permission\View\Helper\Permission $permissionHelper */
+/** @var \Popov\ZfcPermission\View\Helper\Permission $permissionHelper */
 $permissionHelper = $this->permission();
 
 $controller = $this->layout()->route->getParam('controller');
