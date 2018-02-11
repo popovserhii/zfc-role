@@ -23,28 +23,13 @@ return array(
         ],
     ],
 
-    'service_manager' => array(
+    'dependencies' => array(
 		'aliases' => array(
 			'RoleService'	=> Service\RoleService::class,
 		),
         'invokables' => array(
             Service\RoleService::class => Service\RoleService::class
         ),
-		/*'factories' => array(
-			'Popov\Roles\Service\RolesService' => function ($sm) {
-				$em = $sm->get('Doctrine\ORM\EntityManager');
-				$service = \Popov\Agere\Service\Factory\Helper::create('roles/roles', $em);
-
-				// Users
-				$service::addService('users', $sm->get('UsersService'));
-
-				//\Popov\Agere\Service\Factory\Helper::create('permission/permissionAccess', $em);
-				\Popov\Agere\Service\Factory\Helper::create('mail/mailOptionRole', $em);
-
-				return $service;
-			},
-
-		),*/
 	),
 
 	// Doctrine config
@@ -62,51 +47,50 @@ return array(
             ],
         ],
     ],
-
-	// @link http://adam.lundrigan.ca/2012/07/quick-and-dirty-zf2-zend-navigation/
-	// All navigation-related configuration is collected in the 'navigation' key
-	'navigation' => array(
-		// The DefaultNavigationFactory we configured in (1) uses 'default' as the sitemap key
-		'default' => array(
-			// And finally, here is where we define our page hierarchy
-			'roles' => array(
-				'module' => 'roles',
-				'label' => 'Главная',
-				'route' => 'default',
-				'controller' => 'index',
-				'action' => 'index',
-				'pages' => array(
-					'settings-index' => array(
-						'label'      => 'Настройки',
-						'route'      => 'default',
-						'controller' => 'settings',
-						'action'     => 'index',
-						'pages' => array(
-							'roles-index' => array(
-								'label' => 'Роли',
-								'route' => 'default',
-								'controller' => 'roles',
-								'action' => 'index',
-								'pages' => array(
-									'roles-add' => array(
-										'label' => 'Добавить',
-										'route' => 'default',
-										'controller' => 'roles',
-										'action' => 'add',
-									),
-									'roles-edit' => array(
-										'label' => 'Редактировать',
-										'route' => 'default/id',
-										'controller' => 'roles',
-										'action' => 'edit',
-									),
-								),
-							),
-						),
-					),
-				),
-			),
-		),
-	),
+    // @link http://adam.lundrigan.ca/2012/07/quick-and-dirty-zf2-zend-navigation/
+    // All navigation-related configuration is collected in the 'navigation' key
+    'navigation' => array(
+        // The DefaultNavigationFactory we configured in (1) uses 'default' as the sitemap key
+        'default' => array(
+            // And finally, here is where we define our page hierarchy
+            'roles' => array(
+                'module' => 'roles',
+                'label' => 'Главная',
+                'route' => 'default',
+                'controller' => 'index',
+                'action' => 'index',
+                'pages' => array(
+                    'settings-index' => array(
+                        'label' => 'Настройки',
+                        'route' => 'default',
+                        'controller' => 'settings',
+                        'action' => 'index',
+                        'pages' => array(
+                            'roles-index' => array(
+                                'label' => 'Роли',
+                                'route' => 'default',
+                                'controller' => 'roles',
+                                'action' => 'index',
+                                'pages' => array(
+                                    'roles-add' => array(
+                                        'label' => 'Добавить',
+                                        'route' => 'default',
+                                        'controller' => 'roles',
+                                        'action' => 'add',
+                                    ),
+                                    'roles-edit' => array(
+                                        'label' => 'Редактировать',
+                                        'route' => 'default/id',
+                                        'controller' => 'roles',
+                                        'action' => 'edit',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
 
 );

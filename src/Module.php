@@ -7,19 +7,10 @@ class Module
 
     public function getConfig()
     {
-        return include __DIR__ . '/../config/module.config.php';
+        $config = include __DIR__ . '/../config/module.config.php';
+        $config['service_manager'] = $config['dependencies'];
+        unset($config['dependencies']);
+
+        return $config;
     }
-
-    /*public function getViewHelperConfig()
-    {
-        return [
-            'factories' => [
-                'roles' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-
-                    return new \Popov\ZfcRole\View\Helper\Role($locator->get('RolesService'));
-                },
-            ],
-        ];
-    }*/
 }
