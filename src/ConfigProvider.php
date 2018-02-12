@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  *
  * @category Popov
- * @package Popov_ZfcUser
+ * @package Popov_ZfcRole
  * @author Serhii Popov <popow.serhii@gmail.com>
  * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
