@@ -5,11 +5,16 @@ use Popov\ZfcCore\Service\DomainServiceAbstract;
 //use Popov\Agere\Service\AbstractEntityService;
 //use Popov\Logs\Event\Logs as LogsEvent;
 use Popov\ZfcRole\Model\Role;
+use Popov\ZfcRole\Model\Repository\RoleRepository;
 
-
+/**
+* Class UserService
+ *
+ * @method getRepository() RoleRepository
+*/
 class RoleService extends DomainServiceAbstract
 {
-	protected $repository = Role::class;
+	protected $entity = Role::class;
 
 	protected $_repositoryName = 'roles';
 	protected $_resources = [
@@ -17,6 +22,12 @@ class RoleService extends DomainServiceAbstract
 		'all'		=> 'All',
 	];
 
+    public function getRoles()
+    {
+        $gb = $this->getRepository()->getRoles();
+
+        return $gb;
+    }
 
 	/**
 	 * @return array
@@ -70,14 +81,13 @@ class RoleService extends DomainServiceAbstract
 			$oneItem->$method($val);
 		}
 
-		$repository = $this->getRepository($this->_repositoryName);
-		$repository->save($oneItem);
+		//$repository = $this->getRepository();
 
-		if ($isNew)
+		/*if ($isNew)
 		{
 			// Update Module Permission
-			$this->updatePermission(__CLASS__);
-		}
+			//$this->updatePermission(__CLASS__);
+		}*/
 
 		return $oneItem;
 	}

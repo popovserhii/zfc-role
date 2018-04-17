@@ -1,38 +1,52 @@
 <?php
+
 namespace Popov\ZfcRole;
 
-return array(
-	'controllers' => array(
-		'invokables' => array(
-			'roles' => 'Popov\Roles\Controller\RolesController'
-		),
-	),
+return [
+    'assetic_configuration' => require 'assets.config.php',
 
-	'view_manager' => array(
-        'template_map' => array(
-            'roles/partial/settings-content'    => __DIR__ . '/../view/popov/role/partial/settings/content.phtml',
-        ),
-		'template_path_stack' => array(
-			__DIR__ . '/../view',
-		),
-	),
+    'controllers' => [
+        'invokables' => [
+            'roles' => 'Popov\Roles\Controller\RolesController',
+        ],
+    ],
 
+    // middleware
+    'actions' => [
+        'role' => __NAMESPACE__
+    ],
+
+    'view_manager' => [
+        'template_map' => [
+            'roles/partial/settings-content' => __DIR__ . '/../view/popov/role/partial/settings/content.phtml',
+        ],
+        'template_path_stack' => [
+            __DIR__ . '/../view',
+        ],
+    ],
+    // middleware
+    'templates' => [
+        'map' => [
+            'roles::settings-content' => __DIR__ . '/../view/popov/role/partial/settings/content.phtml',
+        ],
+        'paths' => [
+            'admin-role' => [__DIR__ . '/../view/admin/role'],
+        ],
+    ],
     'view_helpers' => [
         'factories' => [
             'role' => View\Helper\Factory\RoleFactory::class,
         ],
     ],
-
-    'dependencies' => array(
-		'aliases' => array(
-			'RoleService'	=> Service\RoleService::class,
-		),
-        'invokables' => array(
-            Service\RoleService::class => Service\RoleService::class
-        ),
-	),
-
-	// Doctrine config
+    'dependencies' => [
+        'aliases' => [
+            'RoleService' => Service\RoleService::class,
+        ],
+        'invokables' => [
+            Service\RoleService::class => Service\RoleService::class,
+        ],
+    ],
+    // Doctrine config
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
@@ -49,48 +63,47 @@ return array(
     ],
     // @link http://adam.lundrigan.ca/2012/07/quick-and-dirty-zf2-zend-navigation/
     // All navigation-related configuration is collected in the 'navigation' key
-    'navigation' => array(
+    'navigation' => [
         // The DefaultNavigationFactory we configured in (1) uses 'default' as the sitemap key
-        'default' => array(
+        'default' => [
             // And finally, here is where we define our page hierarchy
-            'roles' => array(
+            'roles' => [
                 'module' => 'roles',
                 'label' => 'Главная',
                 'route' => 'default',
                 'controller' => 'index',
                 'action' => 'index',
-                'pages' => array(
-                    'settings-index' => array(
+                'pages' => [
+                    'settings-index' => [
                         'label' => 'Настройки',
                         'route' => 'default',
                         'controller' => 'settings',
                         'action' => 'index',
-                        'pages' => array(
-                            'roles-index' => array(
+                        'pages' => [
+                            'roles-index' => [
                                 'label' => 'Роли',
                                 'route' => 'default',
                                 'controller' => 'roles',
                                 'action' => 'index',
-                                'pages' => array(
-                                    'roles-add' => array(
+                                'pages' => [
+                                    'roles-add' => [
                                         'label' => 'Добавить',
                                         'route' => 'default',
                                         'controller' => 'roles',
                                         'action' => 'add',
-                                    ),
-                                    'roles-edit' => array(
+                                    ],
+                                    'roles-edit' => [
                                         'label' => 'Редактировать',
                                         'route' => 'default/id',
                                         'controller' => 'roles',
                                         'action' => 'edit',
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
-
-);
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];

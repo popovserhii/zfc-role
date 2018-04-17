@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Popov\ZfcUser\Model\User;
 
 /**
- * @ORM\Entity(repositoryClass="Popov\ZfcUser\Model\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Popov\ZfcRole\Model\Repository\RoleRepository")
  * @ORM\Table(name="role")
  */
 class Role {

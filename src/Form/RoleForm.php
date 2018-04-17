@@ -5,7 +5,7 @@ use Zend\Form\Form,
 	Zend\InputFilter\Factory as InputFactory,
 	Zend\InputFilter\InputFilter;
 
-class Roles extends Form {
+class RoleForm extends Form {
 
 	public function __construct()
 	{
@@ -15,7 +15,7 @@ class Roles extends Form {
 
 
 		$this->add([
-			'name' => 'role',
+			'name' => 'name',
 			'attributes' => [
 				'required' => 'required'
 			],
@@ -28,7 +28,7 @@ class Roles extends Form {
 		$factory = new InputFactory();
 
 		$inputFilter->add($factory->createInput(array(
-			'name'	=> 'role',
+			'name'	=> 'name',
 			'required' => true,
 			'filters' => array(
 				array('name' => 'StringTrim'),

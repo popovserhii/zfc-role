@@ -1,19 +1,22 @@
 <?php
-use Popov\Users\Acl\Acl;
+use Popov\ZfcUser\Acl\Acl;
 
-$this->plugin('translate')->setTranslatorTextDomain('Popov\Permission');
+$this->plugin('translate')->setTranslatorTextDomain('Popov\ZfcPermission');
 
 /** @var \Popov\ZfcRole\View\Helper\Role $rolesHelper */
-$rolesHelper = $this->roles();
+$rolesHelper = $this->role();
 
-/** @var \Popov\ZfcPermission\View\Helper\Permission $permissionHelper */
+/** @var \Popov\ZfcPermission\View\Helper\PermissionHelper $permissionHelper */
 $permissionHelper = $this->permission();
 
-$controller = $this->layout()->route->getParam('controller');
-$action = $this->layout()->route->getParam('action');
+$controller = $this->current('routeParams')['resource'];
+$action = $this->current('routeParams')['action'];
 
 $resource = $form->get('resource')->getValue();
 $classActiveTab = 'active';
+/** @var \Stagem\ZfcMenu\Service\MenuService $menuService */
+$menuService = $this->menu()->getMenuService();
+$tabs = $menuService->getMainMenu();
 $permissionTree = $permissionHelper->permissionTree($tabs);
 ?>
 
@@ -22,7 +25,7 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
     <?= $this->form()->openTag($form) ?>
 	<div>
 		<div class="title left">
-			Роль: <?=$this->formRow($form->get('role'))?>
+			Роль: <?=$this->formRow($form->get('name'))?>
 		</div>
 		<div class="right">
 			<?php
@@ -35,15 +38,21 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
 				'action'     => 'edit',
 			];
 
-			echo $this->buttons('saveItem', $buttonsArgs);
+			//echo $this->buttons('saveItem', $buttonsArgs);
 			?>
 		</div>
+
 		<div class="right">
 			Доступ к ресурсу
 			<select name="resource" onchange="$('#resource_access').toggle()" class="big-select">
                 <?= $rolesHelper->resourceList($resource) ?>
             </select>
 		</div>
+
+		<div class="right">
+			<input name="save" class="button" value="Сохранить" type="submit">
+		</div>
+
 	</div>
 
 	<br class="clear">
@@ -54,8 +63,8 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
 			<?php $i = $keySettings = 1; ?>
 			<?php foreach($tabs as $tab) : ?>
 				<?php $class = ($i == 1) ? $classActiveTab : ''; ?>
-                <div class="tab-1 <?= $class ?>"><a href="#tab<?= $i ?>"><?= $tab->getMenu() ?></a></div>
-                <?php if ($tab->getController() == 'settings') : ?>
+                <div class="tab-1 <?= $class ?>"><a href="#tab<?= $i ?>"><?= $tab->getTitle() ?></a></div>
+                <?php if ($tab->getSlug() == 'settings') : ?>
                     <?php $keySettings = $i; ?>
                 <?php endif; ?>
                 <?php ++$i; ?>
@@ -120,7 +129,7 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
                                         <div>Дополнительные настройки <div class="arrows arrow-down"></div></div>
                                         <br class="clear">
                                     </div>
-                                    <?= $this->partial('roles/partial/settings-content', [
+                                    <?= $this->partial('role::settings-content', [
                                         'settings' => $settingsSimple,
                                         'items' => $items,
                                     ]) ?>
@@ -141,7 +150,7 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
                                         <?php } ?>
                                         <br class="clear">
                                     </div>
-                                    <?= $this->partial('roles/partial/settings-content', [
+                                    <?= $this->partial('role::settings-content', [
                                         'settings'  => $settings,
                                         'items'     => $items,
                                     ]) ?>

@@ -5,11 +5,23 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use	Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\ORM\EntityRepository;
 
-class RolesRepository extends EntityRepository {
+class RoleRepository extends EntityRepository {
 
 	protected $_table = 'roles';
 
 	protected $_alias = 'role';
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getRoles()
+    {
+        $qb = $this->createQueryBuilder($this->_alias);
+        $qb->select($this->_alias);
+
+        return $qb;
+    }
+
 
     public function findByUsers($users) {
         $userAlias = 'user';
