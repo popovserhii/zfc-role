@@ -20,6 +20,7 @@ use Popov\ZfcDataGrid\Block\AbstractGrid;
 class RoleGrid extends AbstractGrid
 {
     //protected $createButtonTitle = '';
+    protected $backButtonTitle = '';
 
     public function init()
     {
