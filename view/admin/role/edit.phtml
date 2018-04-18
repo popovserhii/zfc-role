@@ -1,7 +1,7 @@
 <?php
 use Popov\ZfcUser\Acl\Acl;
 
-$this->plugin('translate')->setTranslatorTextDomain('Popov\ZfcPermission');
+//$this->plugin('translate')->setTranslatorTextDomain('Popov\ZfcPermission');
 
 /** @var \Popov\ZfcRole\View\Helper\Role $rolesHelper */
 $rolesHelper = $this->role();
@@ -25,7 +25,7 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
     <?= $this->form()->openTag($form) ?>
 	<div>
 		<div class="title left">
-			Роль: <?=$this->formRow($form->get('name'))?>
+			Role: <?=$this->formRow($form->get('name'))?>
 		</div>
 		<div class="right">
 			<?php
@@ -43,14 +43,14 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
 		</div>
 
 		<div class="right">
-			Доступ к ресурсу
+			Access to the resource
 			<select name="resource" onchange="$('#resource_access').toggle()" class="big-select">
                 <?= $rolesHelper->resourceList($resource) ?>
             </select>
 		</div>
 
 		<div class="right">
-			<input name="save" class="button" value="Сохранить" type="submit">
+			<input name="save" class="button" value="Save" type="submit">
 		</div>
 
 	</div>
@@ -91,8 +91,8 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
 							<?php $classAction = array_key_exists('fields', $action) ? ' string-show-hide' : ''; ?>
 							<div class="string string-dark-gray<?=$classAction?>">
 								<div><div class="title-color"><?=$this->translate($moduleName.'::'.$action['text'])?></div><div class="figure arrow-down"></div></div>
-								<div><input type="checkbox" name="accessAction[<?=$action['id']?>][]" value="<?=Acl::getAccess('write')?>"<?=$checked['write']?>> Запись</div>
-								<div><input type="checkbox" name="accessAction[<?=$action['id']?>][]" value="<?=Acl::getAccess('read')?>"<?=$checked['read']?>> Чтение</div>
+								<div><input type="checkbox" name="accessAction[<?=$action['id']?>][]" value="<?=Acl::getAccess('write')?>"<?=$checked['write']?>> Write</div>
+								<div><input type="checkbox" name="accessAction[<?=$action['id']?>][]" value="<?=Acl::getAccess('read')?>"<?=$checked['read']?>> Read</div>
 								<br class="clear">
 							</div>
 							<!-- END action -->
