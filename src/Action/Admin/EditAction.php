@@ -114,7 +114,7 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
                 }
 
                 return new RedirectResponse($this->urlHelper->generate('admin/default', [
-                    'resource' => 'role',
+                    'controller' => 'role',
                     'action' => 'index',
                 ]));
             }
@@ -173,7 +173,7 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
                 $flash->addMessage('User has been successfully saved', 'success');
 
                 return new RedirectResponse($this->urlHelper->generate('admin/default', [
-                    'resource' => 'user',
+                    'controller' => 'user',
                     'action' => 'index',
                 ]));
             } else {

@@ -9,7 +9,7 @@ $rolesHelper = $this->role();
 /** @var \Popov\ZfcPermission\View\Helper\PermissionHelper $permissionHelper */
 $permissionHelper = $this->permission();
 
-$controller = $this->current('routeParams')['resource'];
+$controller = $this->current('routeParams')['controller'];
 $action = $this->current('routeParams')['action'];
 
 $resource = $form->get('resource')->getValue();
