@@ -24,6 +24,7 @@
   },
   "extra": {
     "zf": {
+	  "component": "Popov\\ZfcRole",
       "config-provider": "Popov\\ZfcRole\\ConfigProvider"
     }
   }
