@@ -2,9 +2,17 @@
 namespace Stagem\ZfcRole;
 
 return [
-    'routes' => [
+    /*'routes' => [
         'admin(.*)' => [
             '@role_css',
+            '@role_js',
+        ],
+    ],*/
+
+    'controllers' => [
+        'role' => [
+            '@role_css',
+            '@role_js',
         ],
     ],
 
@@ -17,6 +25,11 @@ return [
                         'css/custom-style.css',
                     ],
                     'options' => ['output' => 'role.css'],
+                ],
+                'role_js' => [
+                    'assets' => [
+                        'js/role.js',
+                    ],
                 ],
             ],
         ],

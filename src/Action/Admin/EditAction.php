@@ -2,19 +2,24 @@
 
 namespace Popov\ZfcRole\Action\Admin;
 
+use Popov\ZfcCore\Helper\UrlHelper;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+// @todo wait until they will start to use Pst in codebase @see https://github.com/zendframework/zend-mvc/blob/master/src/MiddlewareListener.php#L11
+//use Psr\Http\Server\MiddlewareInterface;
+//use Psr\Http\Server\RequestHandlerInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
+
 use Popov\ZfcCore\Filter\Translit;
 use Popov\ZfcPermission\Controller\PermissionAccessController;
 use Popov\ZfcPermission\Service\PermissionService;
 use Popov\ZfcRole\Model\Role;
 use Popov\ZfcRole\Service\RoleService;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Fig\Http\Message\RequestMethodInterface;
 use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Router\RouteResult;
-use Zend\Expressive\Helper\UrlHelper;
+use Zend\Router\RouteMatch;
 use Zend\View\Model\ViewModel;
 use Popov\ZfcForm\FormElementManager;
 use Popov\ZfcUser\Form\UserForm;
@@ -57,30 +62,19 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        /** @var \Zend\Http\Request $request */
-        //$request = $this->getRequest();
-        //$route = $this->getEvent()->getRouteMatch();
-        $route = $request->getAttribute(RouteResult::class);
-
-        //$sm = $this->getServiceLocator();
-        /** @var \Popov\ZfcRole\Service\RoleService $service */
-        $service = $this->roleService;
-
-        $params = $route->getMatchedParams();
-
-        $id = (int) ($params['id'] ?? 0);
-        //$item = $service->find($id);
+        $route = $request->getAttribute(RouteMatch::class);
 
         /** @var Role $user */
-        $item = ($item = $this->roleService->find($id))
-            ? $item
+        $role = ($role = $this->roleService->find($id = (int) ($route->getParams()['id'] ?? 0)))
+            ? $role
             : $this->roleService->getObjectModel();
+
 
         $form = new RoleForm();
         $fields = ['name', 'resource'];
         foreach ($fields as $field) {
             $method = 'get' . ucfirst($field);
-            $form->get($field)->setValue($params[$field] ?? $item->$method());
+            $form->get($field)->setValue($params[$field] ?? $role->$method());
         }
 
 
@@ -101,14 +95,14 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
                     }
 
                     $saveData['id'] = $id;
-                    $item = $service->save($saveData, $item);
+                    $item = $this->roleService->save($saveData, $role);
 
                     if (!$id) {
                         $this->permissionService->updateSettings(); // @todo exclude to event
                     }
 
-                    $service->getObjectManager()->persist($item);
-                    $service->getObjectManager()->flush();
+                    $this->roleService->getObjectManager()->persist($item);
+                    $this->roleService->getObjectManager()->flush();
 
                     $this->permissionAccessController->edit($request->getParsedBody(), $item->getId());
                 }
@@ -120,20 +114,9 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
             }
         }
 
-        //$this->layout('layout/home');
-        /** @var \Popov\Menu\Service\MenuService $menuService */
-        //$menuService = $sm->get('MenuService');
-
-        /*return [
-            //'id'    => $item->getId(),
-            //'tabs'  => $menuService->getItemsCollection(['level' => 0]),
-            'form'  => $form,
-            'items' => $this->permissionAccessController->edit(null, $item->getId()),
-        ];*/
-
         $view = new ViewModel([
             'form'  => $form,
-            'items' => $this->permissionAccessController->edit(null, $item->getId()),
+            'items' => $this->permissionAccessController->edit(null, $role->getId()),
         ]);
 
         return $handler->handle($request->withAttribute(ViewModel::class, $view));

@@ -128,11 +128,6 @@ body.default2 a[href="/"] {
 
 
 /* page roles */
-
-#resource_access {
-	font-size: 13px;
-}
-
 .big-select, .column-after-menu .button {
 	height: 30px;
 	padding: 5px 20px;
@@ -148,6 +143,11 @@ body.default2 a[href="/"] {
 
 .column-after-menu input[type=text] {
 	padding: 4px;
+}
+.column-after-menu input[type="checkbox"] {
+	height: inherit;
+	width: auto;
+	vertical-align: bottom;
 }
 
 /* tabs */

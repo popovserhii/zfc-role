@@ -16,11 +16,14 @@
 namespace Popov\ZfcRole\Block\Grid;
 
 use Popov\ZfcDataGrid\Block\AbstractGrid;
+use Popov\ZfcRole\Model\Role;
 
 class RoleGrid extends AbstractGrid
 {
     //protected $createButtonTitle = '';
     protected $backButtonTitle = '';
+
+    protected $id = Role::MNEMO;
 
     public function init()
     {
@@ -41,15 +44,15 @@ class RoleGrid extends AbstractGrid
 
         $grid->setToolbarTemplateVariables($rendererOptions);
 
-        $colId = $this->add([
+        $this->add([
             'name' => 'Select',
-            'construct' => ['id', 'role'],
+            'construct' => ['id', $this->id],
             'identity' => true,
         ])->getDataGrid()->getColumnByUniqueId('role_id');
 
         $this->add([
             'name' => 'Select',
-            'construct' => ['name', 'role'],
+            'construct' => ['name', $this->id],
             'label' => 'Role',
             'identity' => false,
             'width' => 3,
@@ -57,7 +60,7 @@ class RoleGrid extends AbstractGrid
 
         $this->add([
             'name' => 'Select',
-            'construct' => ['mnemo', 'role'],
+            'construct' => ['mnemo', $this->id],
             'label' => 'Mnemo',
             'identity' => false,
             'width' => 3,
@@ -75,7 +78,7 @@ class RoleGrid extends AbstractGrid
             'formatters' => [[
                 'name' => 'Link',
                 'attributes' => ['class' => 'pencil-edit-icon', 'target' => '_blank'],
-                'link' => ['href' => '/admin/role/edit', 'placeholder_column' => $colId]
+                'link' => ['href' => '/admin/role/edit/%s', 'placeholder_column' => [Role::MNEMO . '_id']]
             ]],
         ]);
 

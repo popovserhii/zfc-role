@@ -14,9 +14,14 @@ $action = $this->current('routeParams')['action'];
 
 $resource = $form->get('resource')->getValue();
 $classActiveTab = 'active';
+
+//$navigation = $this->navigation('Zend\Navigation\Admin');
+$tabs = $this->navigation('Zend\Navigation\Admin')->getContainer()->getPages();
+
+
 /** @var \Stagem\ZfcMenu\Service\MenuService $menuService */
-$menuService = $this->menu()->getMenuService();
-$tabs = $menuService->getMainMenu();
+//$menuService = $this->menu()->getMenuService();
+//$tabs = $menuService->getMainMenu();
 $permissionTree = $permissionHelper->permissionTree($tabs);
 ?>
 
@@ -63,8 +68,8 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
 			<?php $i = $keySettings = 1; ?>
 			<?php foreach($tabs as $tab) : ?>
 				<?php $class = ($i == 1) ? $classActiveTab : ''; ?>
-                <div class="tab-1 <?= $class ?>"><a href="#tab<?= $i ?>"><?= $tab->getTitle() ?></a></div>
-                <?php if ($tab->getSlug() == 'settings') : ?>
+                <div class="tab-1 tab <?= $class ?>"><a href="#tab<?= $i ?>"><?= $tab->getLabel() ?></a></div>
+                <?php if ($tab->getController() == 'settings') : ?>
                     <?php $keySettings = $i; ?>
                 <?php endif; ?>
                 <?php ++$i; ?>
@@ -73,7 +78,6 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
 		<!-- END header -->
 		<!-- content -->
 		<div class="body-content">
-            <?php //\Zend\Debug\Debug::dump($permissionTree); die(__METHOD__); ?>
 			<?php foreach ($permissionTree as $key => $tree) { ?>
 				<?php $keyTab = $key + 1; ?>
                 <div id="tab<?= $keyTab ?>">
@@ -83,8 +87,6 @@ $permissionTree = $permissionHelper->permissionTree($tabs);
                             <div class="string-title"><?= $this->translate($moduleName) ?></div>
 						<?php endif; ?>
 						<!-- END module name -->
-                        <?php //\Zend\Debug\Debug::dump($moduleName); //die(__METHOD__); ?>
-
                         <?php foreach ($actions as $action) { ?>
 							<!-- action -->
 							<?php $checked = $permissionHelper->getChecked($items, 'action', $action['id']); ?>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Popov\ZfcRole\Model;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,32 +10,36 @@ use Popov\ZfcUser\Model\User;
  * @ORM\Entity(repositoryClass="Popov\ZfcRole\Model\Repository\RoleRepository")
  * @ORM\Table(name="role")
  */
-class Role {
+class Role
+{
+    const MNEMO = 'role';
+    const TABLE = 'role';
+
     /**
      * @var integer
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned":true})
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-	private $id;
+    private $id;
 
     /**
      * @var string
      * @ORM\Column(name="name", type="string", nullable=false)
      */
-	private $name;
+    private $name;
 
     /**
      * @var string
      * @ORM\Column(name="mnemo", type="string", length=32, nullable=false)
      */
-	private $mnemo;
+    private $mnemo;
 
     /**
      * @var string
      * @ORM\Column(name="resource", type="string", nullable=false)
      */
-	private $resource;
+    private $resource;
 
     /**
      * Many Groups have Many Users.
@@ -44,12 +49,13 @@ class Role {
      */
     private $users;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->users = new ArrayCollection();
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * @return int
