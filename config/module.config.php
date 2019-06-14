@@ -54,6 +54,13 @@ return [
             Service\RoleService::class => Service\RoleService::class,
         ],
     ],
+
+    'graphql' => [
+        'queries' => [
+            'paths' => [__DIR__ . '/../src/GraphQL/Query'],
+        ],
+    ],
+
     // Doctrine config
     'doctrine' => [
         'driver' => [
