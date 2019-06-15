@@ -13,6 +13,8 @@
  * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
+namespace Popov\ZfcRole\GraphQL\Query;
+
 use GraphQL\Type\Definition\Type;
 use Popov\ZfcRole\Model\Role;
 use \GraphQL\Doctrine\Types;
@@ -23,7 +25,7 @@ class RoleQuery
     {
         return [
             'role' => [
-                'type' => $this->types->getOutput(Role::class), // Use automated ObjectType for output
+                'type' => $types->getOutput(Role::class), // Use automated ObjectType for output
                 'description' => 'Returns user by id',
                 'args' => [
                     'id' => Type::nonNull(Type::id()),
